@@ -28,8 +28,8 @@ looker.plugins.visualizations.add({
     this.clearErrors();
     console.log('updateAsync() data', data)
 
-    // var container = document.getElementById('amContainer')
-    // container.textContent = JSON.stringify(data, null, 2)
+    var container = document.getElementById('amContainer')
+    container.textContent = JSON.stringify(data, null, 2)
 
     buildAMChart(element)
     
