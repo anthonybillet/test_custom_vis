@@ -8,7 +8,7 @@
 // Test the imports:
 // console.log(am4core)
 // console.log(am4themes_animated)
-console.log(this)
+
 
 
 
@@ -20,6 +20,7 @@ const buildAMChart = function(element) {
 
 looker.plugins.visualizations.add({
   create: function(element, config) {
+    console.log(this)
     this.container = element.appendChild(document.createElement("div"));
     this.container.id = 'amContainer';
   },
