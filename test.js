@@ -30,8 +30,8 @@ looker.plugins.visualizations.add({
     this.clearErrors();
     console.log('updateAsync() data', data)
 
-    var container = document.getElementById('amContainer')
-    container.textContent = JSON.stringify(data, null, 2)
+//     var container = document.getElementById('amContainer')
+//     container.textContent = JSON.stringify(data, null, 2)
 
     buildAMChart(element)
     
@@ -40,6 +40,7 @@ looker.plugins.visualizations.add({
 })  
 
 var container = document.getElementById('amContainer')
+console.log('AAAAAA',container)
 let chart = am4core.create(container, am4charts.XYChart);
 chart.paddingRight = 20;
 
