@@ -6,8 +6,9 @@
 // https://www.amcharts.com/lib/4/core.js,https://www.amcharts.com/lib/4/charts.js,https://www.amcharts.com/lib/4/themes/animated.js
 
 // Test the imports:
-console.log(am4core)
-console.log(am4themes_animated)
+// console.log(am4core)
+// console.log(am4themes_animated)
+console.log(this)
 
 
 
