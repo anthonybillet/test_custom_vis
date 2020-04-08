@@ -39,7 +39,8 @@ looker.plugins.visualizations.add({
   }
 })  
 
-let chart = am4core.create("chartdiv", am4charts.XYChart);
+var container = document.getElementById('amContainer')
+let chart = am4core.create(container, am4charts.XYChart);
 chart.paddingRight = 20;
 
 let data = [];
