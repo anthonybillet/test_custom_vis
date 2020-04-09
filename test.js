@@ -65,3 +65,5 @@ looker.plugins.visualizations.add({
     chart.scrollbarX = scrollbarX;
 
     done();
+  }
+})
