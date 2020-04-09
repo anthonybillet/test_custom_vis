@@ -6,67 +6,62 @@
 // https://www.amcharts.com/lib/4/core.js,https://www.amcharts.com/lib/4/charts.js,https://www.amcharts.com/lib/4/themes/animated.js
 
 // Test the imports:
-// console.log(am4core)
-// console.log(am4themes_animated)
-
-
-
+console.log(am4core)
+console.log(am4themes_animated)
 
 am4core.useTheme(am4themes_animated);
 
-const buildAMChart = function(element) {  
-  // do stuff
-}
 
 looker.plugins.visualizations.add({
   create: function(element, config) {
-    console.log(this)
     this.container = element.appendChild(document.createElement("div"));
     this.container.id = 'amContainer';
   },
 
   updateAsync: function(data, element, config, queryResponse, details, done) {
-    // Clear any errors from previous updates.
+    // Clear any errors from previous updates:
     this.clearErrors();
+
+    // Dump data and metadata to console:
     console.log('updateAsync() data', data)
+    console.log('updateAsync() config', config)
+    console.log('updateAsync() queryResponse', queryResponse)
 
-//     var container = document.getElementById('amContainer')
-//     container.textContent = JSON.stringify(data, null, 2)
+    // get the names of the first dimension and measure available in data
+    dimension = config.query_fields.dimensions[0].name;
+    measure = config.query_fields.measures[0].name;
 
-    buildAMChart(element)
-    
+    // build data array for the chart, by iterating over the Looker data object
+    let amData = [];
+    for (let i = 0; i < data.length; i++) {
+        row = data[i];
+        amData.push({
+          date: row[dimension].value, 
+          value: row[measure].value,
+        });
+    }
+    console.log('amChart data', amData)
+
+    // chart building code copied directly from Elysium
+    let chart = am4core.create("amContainer", am4charts.XYChart);
+    chart.data = amData;
+
+    let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
+    dateAxis.renderer.grid.template.location = 0;
+
+    let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    valueAxis.tooltip.disabled = true;
+    valueAxis.renderer.minWidth = 35;
+
+    let series = chart.series.push(new am4charts.LineSeries());
+    series.dataFields.dateX = "date";
+    series.dataFields.valueY = "value";
+
+    series.tooltipText = "{valueY.value}";
+    chart.cursor = new am4charts.XYCursor();
+
+    let scrollbarX = new am4charts.XYChartScrollbar();
+    scrollbarX.series.push(series);
+    chart.scrollbarX = scrollbarX;
+
     done();
-  }
-})  
-
-var container = document.getElementById('amContainer')
-console.log('AAAAAA',container)
-let chart = am4core.create(container, am4charts.XYChart);
-chart.paddingRight = 20;
-
-let data = [];
-let visits = 10;
-for (let i = 1; i < 366; i++) {
-    visits += Math.round((Math.random() < 0.5 ? 1 : -1) * Math.random() * 10);
-    data.push({ date: new Date(2018, 0, i), name: "name" + i, value: visits });
-}
-
-chart.data = data;
-
-let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
-dateAxis.renderer.grid.template.location = 0;
-
-let valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-valueAxis.tooltip.disabled = true;
-valueAxis.renderer.minWidth = 35;
-
-let series = chart.series.push(new am4charts.LineSeries());
-series.dataFields.dateX = "date";
-series.dataFields.valueY = "value";
-
-series.tooltipText = "{valueY.value}";
-chart.cursor = new am4charts.XYCursor();
-
-let scrollbarX = new am4charts.XYChartScrollbar();
-scrollbarX.series.push(series);
-chart.scrollbarX = scrollbarX;
