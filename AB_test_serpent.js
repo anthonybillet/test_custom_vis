@@ -56,10 +56,17 @@ looker.plugins.visualizations.add({
     // build data array for the chart, by iterating over the Looker data object
     var amData = [];
 	var colorSet = new am4core.ColorSet();
-	var xyz = "";
-    for(var row of data) {
+	// var xyz = "";
+    for(var row in data) {
+   foreach(var row in data) {
 		var cell = row[queryResponse.fields.dimensions[3].name]
-		xyz += LookerCharts.Utils.htmlForCell(cell);
+		xyz = LookerCharts.Utils.htmlForCell(cell);
+		var cell = data[queryResponse.fields.dimensions[0].name];
+ 		cell.onclick = function(event) {
+ 			LookerCharts.Utils.openDrillMenu({
+ 				links: cell.links,
+ 				event: event
+ 			});
         amData.push({
             category: row[dst_name].value,
 			start: row[start_date].value,
@@ -68,10 +75,24 @@ looker.plugins.visualizations.add({
 			//task: row[userid].value,
 			task: xyz
         });
-		
+	  }
     }
+
+  //    for (var row in data) {
+ 	// foreach(var row in data) {
+ 	// 	var cell = data[queryResponse.fields.dimensions[0].name];
+ 	// 	var cellElement = myBuildElementFunction(cell);
+ 	// 	cellElement.onclick = function(event) {
+ 	// 		LookerCharts.Utils.openDrillMenu({
+ 	// 			links: cell.links,
+ 	// 			event: event
+ 	// 		});
+ 	// 	};
+ 		// ... more visualization stuff...
+ 	}
+ }
 	
-	element.innerHTML = xyz;
+	// element.innerHTML = xyz;
 	
 	console.log('amChart data', amData)
 
