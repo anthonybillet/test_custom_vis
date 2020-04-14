@@ -56,6 +56,7 @@ looker.plugins.visualizations.add({
     // build data array for the chart, by iterating over the Looker data object
     var amData = [];
 	var colorSet = new am4core.ColorSet();
+	var xyz = "";
     for(var row of data) {
 		var cell = row[queryResponse.fields.dimensions[3].name]
 		xyz += LookerCharts.Utils.htmlForCell(cell);
