@@ -1,3 +1,4 @@
+// dependencies: https://www.amcharts.com/lib/4/core.js,https://www.amcharts.com/lib/4/charts.js,https://www.amcharts.com/lib/4/themes/animated.js,https://www.amcharts.com/lib/4/themes/dark.js,https://www.amcharts.com/lib/4/plugins/timeline.js,https://www.amcharts.com/lib/4/plugins/bullets.js
 // line to enter into the js
 
 // Test the imports:
@@ -9,16 +10,20 @@ console.log(am4themes_dark)
 am4core.useTheme(am4themes_animated);
 am4core.useTheme(am4themes_dark);
 
-
 looker.plugins.visualizations.add({
   create: function(element, config) {
 	  element.innerHTML = `
       <style>
-		body { background-color: #30303d; color: #fff; }
+		body { 
+      background-color: #30303d; 
+      color: #fff; 
+      font-family: Arial, Helvetica, sans-serif
+    }
 				  .sannith {
 				  width: 100%;
 				  height: 600px;
 				}
+
 				.demo-theme-dark .demo-background {
 				  background: #fff;
 }
@@ -74,9 +79,6 @@ looker.plugins.visualizations.add({
 	
 	console.log('amChart data', amData)
 
-
-
-
 	let chart = am4core.create("amContainer", am4plugins_timeline.SerpentineChart);
 	chart.curveContainer.padding(50, 20, 50, 20);
 	chart.levelCount = 4;
@@ -99,7 +101,7 @@ looker.plugins.visualizations.add({
 	categoryAxis.renderer.minGridDistance = 10;
 	categoryAxis.renderer.innerRadius = -60;
 	categoryAxis.renderer.radius = 60;
-	categoryAxis.labelsEnabled = false;
+  	categoryAxis.labelsEnabled = false;
 
 	let dateAxis = chart.xAxes.push(new am4charts.DateAxis());
 	dateAxis.renderer.minGridDistance = 70;
@@ -122,8 +124,11 @@ looker.plugins.visualizations.add({
 
 	let series = chart.series.push(new am4plugins_timeline.CurveColumnSeries());
 	series.columns.template.height = am4core.percent(20);
-	series.columns.template.tooltipHTML = "{task}: [bold]{openDateX}[/] - [bold]{dateX}[/]";
-
+  // series.columns.template.tooltipText = "{task}: [bold]{openDateX}[/] - [bold]{dateX}[/]";
+  series.columns.template.tooltipHTML = '{task}: <b>{openDateX}:00</b> - <b>{dateX}:00</b>';
+  series.tooltip.label.interactionsEnabled = true;
+  series.tooltip.keepTargetHover = true;
+  
 	series.dataFields.openDateX = "start";
 	series.dataFields.dateX = "end";
 	series.dataFields.categoryY = "category";
@@ -136,7 +141,6 @@ looker.plugins.visualizations.add({
 	bullet.circle.strokeOpacity = 0;
 	bullet.propertyFields.fill = "color";
 	bullet.locationX = 0;
-
 
 	let bullet2 = series.bullets.push(new am4charts.CircleBullet());
 	bullet2.circle.radius = 3;
@@ -192,9 +196,8 @@ looker.plugins.visualizations.add({
 	cursor.lineX.strokeOpacity = 1;
 
 	dateAxis.renderer.tooltipLocation2 = 0;
-	categoryAxis.cursorTooltipEnabled = false;
+  categoryAxis.cursorTooltipEnabled = false;
 
 	doneRendering();
 }
 })
-
